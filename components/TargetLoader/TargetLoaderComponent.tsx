@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
-import { Button } from 'react-native-elements';
+import { View, TextInput, StyleSheet } from 'react-native';
+import { Text } from 'react-native-elements';
+import { ValidButton, InvalidButton } from './ConfirmButton';
 
 const defaultHeight = 100;
 const maxHeight = 450;
 
-const TargetLoader: React.FC = () => {
+export type TargetLoaderStateProps = {
+  targetLoadedSuccessfully: boolean;
+};
+
+export type TargetLoaderDispatchProps = {
+  inputTextChanged: (targetInput: string) => void;
+};
+
+export type TargetLoaderProps = TargetLoaderStateProps & TargetLoaderDispatchProps;
+
+const TargetLoader: React.FC<TargetLoaderProps> = ({ inputTextChanged, targetLoadedSuccessfully }) => {
   const [targetInput, setTargetInput] = useState('');
   const [height, setHeight] = useState(defaultHeight);
   return (
@@ -16,19 +27,16 @@ const TargetLoader: React.FC = () => {
         multiline={true}
         scrollEnabled={true}
         value={targetInput}
-        onChangeText={(text) => setTargetInput(text.toUpperCase())}
+        onChangeText={(text) => {
+          setTargetInput(text);
+          inputTextChanged(text);
+        }}
         onContentSizeChange={(event) => {
           setHeight(event.nativeEvent.contentSize.height);
         }}
         placeholder="TARGET NAME 1000/6000/9000"
       />
-      <Button
-        title="Continue"
-        onPress={() => {
-          console.log('clicked');
-        }}
-        containerStyle={{ width: '50%', marginLeft: 'auto', marginRight: 'auto' }}
-      />
+      {targetLoadedSuccessfully ? <ValidButton /> : <InvalidButton />}
     </View>
   );
 };
@@ -36,7 +44,6 @@ const TargetLoader: React.FC = () => {
 const styles = StyleSheet.create({
   mainContainer: {
     marginTop: 50,
-    flex: 1,
   },
   label: {
     fontSize: 25,
@@ -49,10 +56,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     margin: 15,
     padding: 10,
+    backgroundColor: 'white',
   },
-  button: {
-    width: 300,
-  },
+  button: { width: '50%', marginLeft: 'auto', marginRight: 'auto' },
 });
 
 export default TargetLoader;
