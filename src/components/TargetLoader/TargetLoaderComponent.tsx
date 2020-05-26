@@ -13,11 +13,16 @@ export type TargetLoaderStateProps = {
 
 export type TargetLoaderDispatchProps = {
   inputTextChanged: (targetInput: string) => void;
+  onLoadTargetButtonClicked: (targetInput: string) => void;
 };
 
 export type TargetLoaderProps = TargetLoaderStateProps & TargetLoaderDispatchProps;
 
-const TargetLoader: React.FC<TargetLoaderProps> = ({ inputTextChanged, targetLoadedSuccessfully }) => {
+const TargetLoader: React.FC<TargetLoaderProps> = ({
+  inputTextChanged,
+  targetLoadedSuccessfully,
+  onLoadTargetButtonClicked,
+}) => {
   const [targetInput, setTargetInput] = useState('');
   const [height, setHeight] = useState(defaultHeight);
   const [errorOverlayVisible, setErrorOverlayVisible] = useState(false);
@@ -46,7 +51,7 @@ const TargetLoader: React.FC<TargetLoaderProps> = ({ inputTextChanged, targetLoa
       {targetLoadedSuccessfully ? (
         <ValidButton
           onPress={() => {
-            console.log('valid clicked');
+            onLoadTargetButtonClicked(targetInput);
           }}
         />
       ) : (
