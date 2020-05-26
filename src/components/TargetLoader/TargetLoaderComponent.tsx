@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { Text } from 'react-native-elements';
 import { ValidButton, InvalidButton } from './ConfirmButton';
+import ErrorTargetHintOverlay from './ErrorTargetHintOverlay';
 
 const defaultHeight = 100;
 const maxHeight = 450;
@@ -19,6 +20,12 @@ export type TargetLoaderProps = TargetLoaderStateProps & TargetLoaderDispatchPro
 const TargetLoader: React.FC<TargetLoaderProps> = ({ inputTextChanged, targetLoadedSuccessfully }) => {
   const [targetInput, setTargetInput] = useState('');
   const [height, setHeight] = useState(defaultHeight);
+  const [errorOverlayVisible, setErrorOverlayVisible] = useState(false);
+
+  const toggleErrorOverlayVisibility = () => {
+    setErrorOverlayVisible(!errorOverlayVisible);
+  };
+
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.label}>Load targets from text</Text>
@@ -36,7 +43,16 @@ const TargetLoader: React.FC<TargetLoaderProps> = ({ inputTextChanged, targetLoa
         }}
         placeholder="TARGET NAME 1000/6000/9000"
       />
-      {targetLoadedSuccessfully ? <ValidButton /> : <InvalidButton />}
+      {targetLoadedSuccessfully ? (
+        <ValidButton
+          onPress={() => {
+            console.log('valid clicked');
+          }}
+        />
+      ) : (
+        <InvalidButton onPress={toggleErrorOverlayVisibility} />
+      )}
+      <ErrorTargetHintOverlay isVisible={errorOverlayVisible} onBackdropPress={toggleErrorOverlayVisibility} />
     </View>
   );
 };

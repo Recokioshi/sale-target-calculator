@@ -10,6 +10,10 @@ type ConfirmButtonProps = {
   icon: string;
 };
 
+type ValidInvalidButtonProps = {
+  onPress: () => void;
+};
+
 const ConfirmButton: React.FC<ConfirmButtonProps> = ({ title, backgroundColor, onPress, icon }) => {
   return (
     <Button
@@ -22,25 +26,12 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({ title, backgroundColor, o
   );
 };
 
-export const InvalidButton: React.FC = () => (
-  <ConfirmButton
-    title="Error hint"
-    onPress={() => {
-      console.log(`error clicked`);
-    }}
-    backgroundColor="red"
-    icon="times"
-  />
+export const InvalidButton: React.FC<ValidInvalidButtonProps> = ({ onPress }) => (
+  <ConfirmButton title="Error hint" onPress={onPress} backgroundColor="red" icon="times" />
 );
 
-export const ValidButton: React.FC = () => (
-  <ConfirmButton
-    title="Load targets"
-    onPress={() => {
-      console.log(`load clicked`);
-    }}
-    icon="check"
-  />
+export const ValidButton: React.FC<ValidInvalidButtonProps> = ({ onPress }) => (
+  <ConfirmButton title="Load targets" onPress={onPress} icon="check" />
 );
 
 const styles = StyleSheet.create({
