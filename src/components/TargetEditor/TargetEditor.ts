@@ -1,4 +1,9 @@
 import { connect } from 'react-redux';
-import TargetEditor from './TargetEditorComponent';
+import TargetEditor, { TargetEditorStateProps } from './TargetEditorComponent';
+import { State } from '../../redux/types';
 
-export default connect(null, null)(TargetEditor);
+const mapStateToProps = (state: State): TargetEditorStateProps => ({
+  originalTargets: state.originalTargets!,
+});
+
+export default connect<TargetEditorStateProps, {}, {}, State>(mapStateToProps, {})(TargetEditor);
