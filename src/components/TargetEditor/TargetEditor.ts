@@ -1,7 +1,9 @@
 import { connect } from 'react-redux';
-import TargetEditor, { TargetEditorStateProps } from './TargetEditorComponent';
+import TargetEditor, { TargetEditorStateProps, TargetEditorDispatchProps } from './TargetEditorComponent';
 import { State } from '../../redux/types';
 import { Target } from '../../Target';
+import { Dispatch } from 'redux';
+import { resetOriginalTargets } from '../../redux/actions';
 
 const addDayToTotal = (target: Target): Target => {
   target.done += target.today;
@@ -19,4 +21,13 @@ const mapStateToProps = ({ originalTargets }: State): TargetEditorStateProps => 
   };
 };
 
-export default connect<TargetEditorStateProps, {}, {}, State>(mapStateToProps, {})(TargetEditor);
+const mapDispatchToProps = (dispatch: Dispatch): TargetEditorDispatchProps => ({
+  onLoadTargetsAgain: () => {
+    dispatch(resetOriginalTargets());
+  },
+});
+
+export default connect<TargetEditorStateProps, TargetEditorDispatchProps, {}, State>(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TargetEditor);

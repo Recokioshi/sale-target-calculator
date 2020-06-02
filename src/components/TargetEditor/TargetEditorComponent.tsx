@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, FlatList } from 'react-native';
-import { Text } from 'react-native-elements';
+import { Text, Button } from 'react-native-elements';
 import { cloneDeep } from 'lodash';
 
 import { Target } from '../../Target';
@@ -14,7 +14,11 @@ export type TargetEditorStateProps = {
   originalTargets: Target[];
 };
 
-type TargetEditorProps = TargetEditorStateProps;
+export type TargetEditorDispatchProps = {
+  onLoadTargetsAgain: () => void;
+};
+
+type TargetEditorProps = TargetEditorStateProps & TargetEditorDispatchProps;
 
 const TargetRow: React.FC<TargetRowProps> = ({ target, onChangeText }) => {
   return (
@@ -56,7 +60,7 @@ const TargetRow: React.FC<TargetRowProps> = ({ target, onChangeText }) => {
   );
 };
 
-const TargetEditor: React.FC<TargetEditorProps> = ({ originalTargets }) => {
+const TargetEditor: React.FC<TargetEditorProps> = ({ originalTargets, onLoadTargetsAgain }) => {
   const [editedTargets, setEditedTargets] = useState(cloneDeep(originalTargets));
 
   const todayChanged = (index: number) => (newValue: number) => {
@@ -74,6 +78,7 @@ const TargetEditor: React.FC<TargetEditorProps> = ({ originalTargets }) => {
 
   return (
     <View style={styles.mainContainer}>
+      <Button onPress={onLoadTargetsAgain} title="Edit targets from text" />
       <FlatList
         data={editedTargets}
         renderItem={({ item, index }) => (

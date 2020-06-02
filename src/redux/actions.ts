@@ -1,4 +1,4 @@
-import { ActionTargetInputTextChanged, ActionLoadOriginalTargets } from './types';
+import { ActionTargetInputTextChanged, ActionLoadOriginalTargets, ActionResetOriginalTargets } from './types';
 import { Target } from '../Target';
 
 export const targetsInputTextChanged = (newTargetInput: Target[] | null): ActionTargetInputTextChanged => ({
@@ -14,3 +14,5 @@ export const loadOriginalTargets = (
   originalTargets,
   originalTargetsInput,
 });
+
+export const resetOriginalTargets = (): ActionResetOriginalTargets => ({ type: 'RESET_ORIGINAL_TARGETS' });

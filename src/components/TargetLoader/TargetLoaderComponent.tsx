@@ -9,6 +9,7 @@ const maxHeight = 450;
 
 export type TargetLoaderStateProps = {
   targetLoadedSuccessfully: boolean;
+  initTargetInput: string;
 };
 
 export type TargetLoaderDispatchProps = {
@@ -22,8 +23,9 @@ const TargetLoader: React.FC<TargetLoaderProps> = ({
   inputTextChanged,
   targetLoadedSuccessfully,
   onLoadTargetButtonClicked,
+  initTargetInput,
 }) => {
-  const [targetInput, setTargetInput] = useState('');
+  const [targetInput, setTargetInput] = useState(initTargetInput);
   const [height, setHeight] = useState(defaultHeight);
   const [errorOverlayVisible, setErrorOverlayVisible] = useState(false);
 

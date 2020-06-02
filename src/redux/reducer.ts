@@ -13,7 +13,9 @@ const reducer: Reducer<State, Action> = (state: State = defaultState, action: Ac
     case 'TARGET_INPUT_TEXT_CHANGED':
       return { ...state, loadedTargets: action.newTargetInput };
     case 'LOAD_ORIGINAL_TARGETS':
-      return { ...state, originalTargets: action.originalTargets };
+      return { ...state, originalTargets: action.originalTargets, originalTargetsInput: action.originalTargetsInput };
+    case 'RESET_ORIGINAL_TARGETS':
+      return { ...state, originalTargets: null };
     default:
       return state;
   }

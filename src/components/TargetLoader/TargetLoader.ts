@@ -7,6 +7,7 @@ import { parseTargetInput } from './TargetInputParser';
 
 const mapStateToProps = (state: State): TargetLoaderStateProps => ({
   targetLoadedSuccessfully: !!state?.loadedTargets,
+  initTargetInput: state.originalTargetsInput,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): TargetLoaderDispatchProps => ({
