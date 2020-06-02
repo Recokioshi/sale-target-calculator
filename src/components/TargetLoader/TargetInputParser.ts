@@ -19,7 +19,9 @@ const matchTargetRegex = (input: string) => input.match(targetRegexp);
 const separatorsMatch = (groups: RegexGroups): boolean =>
   !!groups && groups.first_separator === groups.second_separator;
 const parseGroup = (groups: RegexGroups): Target | null => {
-  return groups ? { name: groups.name, today: groups.today, done: groups.done, total: groups.total } : null;
+  return groups
+    ? { name: groups.name, today: Number(groups.today), done: Number(groups.done), total: Number(groups.total) }
+    : null;
 };
 const checkEveryRow = (parsedRows: (Target | null)[]): Target[] | null =>
   parsedRows.every((row) => !!row) ? (parsedRows as Target[]) : null;

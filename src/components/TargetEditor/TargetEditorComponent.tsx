@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, FlatList } from 'react-native';
 import { Text } from 'react-native-elements';
+import { cloneDeep } from 'lodash';
 
 import { Target } from '../../Target';
 
 type TargetRowProps = {
   target: Target;
+  onChangeText: { today: (text: number) => void; done: (text: number) => void; total: (text: number) => void };
 };
 
 export type TargetEditorStateProps = {
@@ -14,33 +16,81 @@ export type TargetEditorStateProps = {
 
 type TargetEditorProps = TargetEditorStateProps;
 
-const TargetRow: React.FC<TargetRowProps> = ({ target }) => {
+const TargetRow: React.FC<TargetRowProps> = ({ target, onChangeText }) => {
   return (
     <View style={styles.targetRowContainer}>
       <View style={styles.inputWrap}>
         <Text>{target.name}</Text>
       </View>
       <View style={styles.inputWrap}>
-        <TextInput style={styles.inputComp}>{target.today}</TextInput>
+        <TextInput
+          style={styles.inputComp}
+          onChangeText={(text) => {
+            onChangeText.today(Number(text));
+          }}
+        >
+          {target.today}
+        </TextInput>
       </View>
       <View style={styles.inputWrap}>
-        <TextInput style={styles.inputComp}>{target.done}</TextInput>
+        <TextInput
+          style={styles.inputComp}
+          onChangeText={(text) => {
+            onChangeText.done(Number(text));
+          }}
+        >
+          {target.done}
+        </TextInput>
       </View>
       <View style={styles.inputWrap}>
-        <TextInput style={styles.inputComp}>{target.total}</TextInput>
+        <TextInput
+          style={styles.inputComp}
+          onChangeText={(text) => {
+            onChangeText.total(Number(text));
+          }}
+        >
+          {target.total}
+        </TextInput>
       </View>
     </View>
   );
 };
 
-const TargetEditor: React.FC<TargetEditorProps> = ({ originalTargets }) => (
-  <View style={styles.mainContainer}>
-    <FlatList
-      data={originalTargets}
-      renderItem={({ item }) => <TargetRow target={item} key={`${item.name}-${item}`} />}
-    />
-  </View>
-);
+const TargetEditor: React.FC<TargetEditorProps> = ({ originalTargets }) => {
+  const [editedTargets, setEditedTargets] = useState(cloneDeep(originalTargets));
+
+  const todayChanged = (index: number) => (newValue: number) => {
+    let newEditedTargets = [...editedTargets];
+    newEditedTargets[index].done = originalTargets[index].done + newValue;
+    newEditedTargets[index].today = newValue;
+    setEditedTargets(newEditedTargets);
+  };
+
+  const doneTotalChanged = (targetType: 'today' | 'done' | 'total', index: number) => (newValue: number) => {
+    let newEditedTargets = [...editedTargets];
+    newEditedTargets[index][targetType] = newValue;
+    setEditedTargets(newEditedTargets);
+  };
+
+  return (
+    <View style={styles.mainContainer}>
+      <FlatList
+        data={editedTargets}
+        renderItem={({ item, index }) => (
+          <TargetRow
+            target={item}
+            onChangeText={{
+              today: todayChanged(index),
+              done: doneTotalChanged('done', index),
+              total: doneTotalChanged('total', index),
+            }}
+          />
+        )}
+        keyExtractor={(item) => `${item.name}-${item}`}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   mainContainer: {
