@@ -5,6 +5,7 @@ const defaultState: State = {
   loadedTargets: null,
   newTargets: null,
   originalTargets: null,
+  originalTargetsInput: '',
 };
 
 const reducer: Reducer<State, Action> = (state: State = defaultState, action: Action) => {

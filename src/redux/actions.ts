@@ -6,7 +6,11 @@ export const targetsInputTextChanged = (newTargetInput: Target[] | null): Action
   newTargetInput,
 });
 
-export const loadOriginalTargets = (originalTargets: Target[]): ActionLoadOriginalTargets => ({
+export const loadOriginalTargets = (
+  originalTargets: Target[],
+  originalTargetsInput: string,
+): ActionLoadOriginalTargets => ({
   type: 'LOAD_ORIGINAL_TARGETS',
   originalTargets,
+  originalTargetsInput,
 });

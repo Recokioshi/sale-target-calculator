@@ -9,8 +9,17 @@ export type ActionTargetInputTextChanged = {
   type: TARGET_INPUT_TEXT_CHANGED;
   newTargetInput: Target[] | null;
 };
-export type ActionLoadOriginalTargets = { type: LOAD_ORIGINAL_TARGETS; originalTargets: Target[] };
+export type ActionLoadOriginalTargets = {
+  type: LOAD_ORIGINAL_TARGETS;
+  originalTargets: Target[];
+  originalTargetsInput: string;
+};
 
-export type State = { loadedTargets: Target[] | null; originalTargets: Target[] | null; newTargets: Target[] | null };
+export type State = {
+  loadedTargets: Target[] | null;
+  originalTargets: Target[] | null;
+  newTargets: Target[] | null;
+  originalTargetsInput: string;
+};
 
 export type Action = ActionTargetInputTextChanged | ActionLoadOriginalTargets;

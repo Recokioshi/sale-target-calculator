@@ -15,7 +15,7 @@ const mapDispatchToProps = (dispatch: Dispatch): TargetLoaderDispatchProps => ({
   },
   onLoadTargetButtonClicked: (targetInput: string) => {
     const parsedTargets = parseTargetInput(targetInput);
-    parsedTargets && dispatch(loadOriginalTargets(parsedTargets));
+    parsedTargets && dispatch(loadOriginalTargets(parsedTargets, `${targetInput}`));
   },
 });
 
