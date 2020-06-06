@@ -3,7 +3,7 @@ import TargetEditor, { TargetEditorStateProps, TargetEditorDispatchProps } from 
 import { State } from '../../redux/types';
 import { Target } from '../../Target';
 import { Dispatch } from 'redux';
-import { resetOriginalTargets } from '../../redux/actions';
+import { resetOriginalTargets, saveEditedTargets } from '../../redux/actions';
 
 const addDayToTotal = (target: Target): Target => {
   target.done += target.today;
@@ -15,6 +15,14 @@ const loadOriginalTargets = (originalTargets: Target[]): Target[] => {
   return originalTargets.map((target) => addDayToTotal(target));
 };
 
+const mapTargetListToInput = (targets: Target[]): string => {
+  return targets.reduce<string>((acc, target, index) => {
+    acc += index > 0 ? '\n' : '';
+    acc += `${target.name} ${target.today}/${target.done}/${target.total}`;
+    return acc;
+  }, ``);
+};
+
 const mapStateToProps = ({ originalTargets }: State): TargetEditorStateProps => {
   return {
     originalTargets: loadOriginalTargets(originalTargets!),
@@ -24,6 +32,9 @@ const mapStateToProps = ({ originalTargets }: State): TargetEditorStateProps => 
 const mapDispatchToProps = (dispatch: Dispatch): TargetEditorDispatchProps => ({
   onLoadTargetsAgain: () => {
     dispatch(resetOriginalTargets());
+  },
+  onSaveNewTargets: (newTargets: Target[]) => {
+    dispatch(saveEditedTargets(mapTargetListToInput(newTargets)));
   },
 });
 

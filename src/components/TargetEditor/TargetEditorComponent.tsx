@@ -16,6 +16,7 @@ export type TargetEditorStateProps = {
 
 export type TargetEditorDispatchProps = {
   onLoadTargetsAgain: () => void;
+  onSaveNewTargets: (newTargets: Target[]) => void;
 };
 
 type TargetEditorProps = TargetEditorStateProps & TargetEditorDispatchProps;
@@ -60,7 +61,7 @@ const TargetRow: React.FC<TargetRowProps> = ({ target, onChangeText }) => {
   );
 };
 
-const TargetEditor: React.FC<TargetEditorProps> = ({ originalTargets, onLoadTargetsAgain }) => {
+const TargetEditor: React.FC<TargetEditorProps> = ({ originalTargets, onLoadTargetsAgain, onSaveNewTargets }) => {
   const [editedTargets, setEditedTargets] = useState(cloneDeep(originalTargets));
 
   const todayChanged = (index: number) => (newValue: number) => {
@@ -93,6 +94,7 @@ const TargetEditor: React.FC<TargetEditorProps> = ({ originalTargets, onLoadTarg
         )}
         keyExtractor={(item) => `${item.name}-${item}`}
       />
+      <Button onPress={() => onSaveNewTargets(editedTargets)} title="Save new targets" />
     </View>
   );
 };
